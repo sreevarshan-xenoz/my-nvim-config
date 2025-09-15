@@ -3,6 +3,11 @@
 local util = require('sree.core.util')
 local flags = require('sree.flags')
 
+local function lsp_server_count()
+  local clients = vim.lsp.get_active_clients and vim.lsp.get_active_clients() or {}
+  return #clients
+end
+
 local function collect()
   local loaded = vim.tbl_keys(package.loaded)
   table.sort(loaded)
@@ -19,13 +24,14 @@ local function collect()
     plugin_count = plugins,
     background = vim.o.background,
     colorscheme = vim.g.colors_name,
+    lsp_active = lsp_server_count(),
   }
 end
 
 util.command('SreeHealth', function()
   local data = collect()
-  vim.notify(('[SreeHealth] startup=%.1fms plugins=%s bg=%s colorscheme=%s'):format(
-    data.startup_ms or -1, data.plugin_count or '?', data.background, data.colorscheme or 'none'
+  vim.notify(('[SreeHealth] startup=%.1fms plugins=%s lsp=%d bg=%s colorscheme=%s'):format(
+    data.startup_ms or -1, data.plugin_count or '?', data.lsp_active or 0, data.background, data.colorscheme or 'none'
   ))
 end, {})
 
