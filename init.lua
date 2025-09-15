@@ -52,6 +52,8 @@ if theme and theme.apply then theme.apply() end
 
 -- Load health + util modules (non-fatal if missing)
 prequire('sree.core.health')
+local lsp_notify = prequire('sree.core.lsp_notify')
+if lsp_notify and lsp_notify.setup then lsp_notify.setup() end
 
 -- Basic notification if first run
 vim.defer_fn(function()
