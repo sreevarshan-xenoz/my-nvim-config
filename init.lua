@@ -50,11 +50,15 @@ require('lazy').setup(plugin_spec, {
 local theme = prequire('sree.ui.theme')
 if theme and theme.apply then theme.apply() end
 
+-- Load health + util modules (non-fatal if missing)
+prequire('sree.core.health')
+
 -- Basic notification if first run
 vim.defer_fn(function()
   if not vim.g.__sree_boot_msg then
     vim.g.__sree_boot_msg = true
     local elapsed_ms = (vim.loop.hrtime() - start_time) / 1e6
+    _G.SreeStartupMs = elapsed_ms
     vim.notify(('Sree v0.1 core loaded in %.1fms'):format(elapsed_ms), vim.log.levels.INFO)
   end
 end, 120)
