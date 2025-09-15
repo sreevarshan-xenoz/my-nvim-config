@@ -31,6 +31,13 @@ map('n', '<leader>cf', function()
   end
 end, { desc = 'Format Buffer', silent = true })
 
+-- Test mappings
+map('n', '<leader>tt', function() require('sree.test').run_current() end, { desc = 'Test: nearest', silent = true })
+map('n', '<leader>tf', function() require('sree.test').run_file() end, { desc = 'Test: file', silent = true })
+map('n', '<leader>td', function() require('sree.test').run_nearest_debug() end, { desc = 'Test: debug nearest', silent = true })
+map('n', '<leader>to', function() require('sree.test').open_output() end, { desc = 'Test: output', silent = true })
+map('n', '<leader>ts', function() require('sree.test').toggle_summary() end, { desc = 'Test: summary', silent = true })
+
 -- Placeholder for future AI / Sys / Ops keymaps
 -- map('n', '<leader>ai', function() require('sree.ai.chat').toggle() end, silent)
 -- map('v', '<leader>ar', function() require('sree.ai.rewrite').visual_rewrite() end, silent)

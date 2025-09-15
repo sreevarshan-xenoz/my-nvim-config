@@ -8,6 +8,20 @@ local function lsp_server_count()
   return #clients
 end
 
+local function tool_present(bin)
+  return vim.fn.executable(bin) == 1
+end
+
+local function test_status()
+  if not util.safe_require('neotest') then return 'inactive' end
+  return 'ok'
+end
+
+local function overseer_status()
+  if not util.safe_require('overseer') then return 'inactive' end
+  return 'ok'
+end
+
 local function collect()
   local loaded = vim.tbl_keys(package.loaded)
   table.sort(loaded)
@@ -25,13 +39,22 @@ local function collect()
     background = vim.o.background,
     colorscheme = vim.g.colors_name,
     lsp_active = lsp_server_count(),
+    test = test_status(),
+    tasks = overseer_status(),
+    fmt_tools = {
+      stylua = tool_present('stylua'),
+      prettierd = tool_present('prettierd'),
+      black = tool_present('black'),
+      gofumpt = tool_present('gofumpt'),
+      rustfmt = tool_present('rustfmt'),
+    }
   }
 end
 
 util.command('SreeHealth', function()
   local data = collect()
-  vim.notify(('[SreeHealth] startup=%.1fms plugins=%s lsp=%d bg=%s colorscheme=%s'):format(
-    data.startup_ms or -1, data.plugin_count or '?', data.lsp_active or 0, data.background, data.colorscheme or 'none'
+  vim.notify(('[SreeHealth] startup=%.1fms plugins=%s lsp=%d test=%s tasks=%s colorscheme=%s'):format(
+    data.startup_ms or -1, data.plugin_count or '?', data.lsp_active or 0, data.test, data.tasks, data.colorscheme or 'none'
   ))
 end, {})
 

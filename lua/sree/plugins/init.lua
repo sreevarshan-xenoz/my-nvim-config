@@ -1,5 +1,5 @@
 -- plugins/init.lua
--- Central plugin specification (progressing into Phase 2: LSP + Completion + Formatting)
+-- Central plugin specification (Phase 2 -> Phase 3 additions: tasks + tests)
 
 local plugins = {
   -- which-key with namespace registration
@@ -19,7 +19,7 @@ local plugins = {
       { '<leader>fh', function() require('telescope.builtin').help_tags() end, desc = 'Help Tags' },
     }, opts = { defaults = { prompt_prefix = '  ', selection_caret = ' ', sorting_strategy = 'ascending', layout_config = { horizontal = { prompt_position = 'top' } } } }, config = function(_, opts) local tel = require('telescope'); tel.setup(opts); pcall(tel.load_extension, 'fzf') end },
   { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make', cond = function() return vim.fn.executable('make') == 1 end },
-  -- Phase 2: LSP + completion + formatting stack
+  -- Phase 2 stack
   { 'williamboman/mason.nvim', cmd = { 'Mason', 'MasonInstall', 'MasonUpdate' }, build = ':MasonUpdate', config = function() require('mason').setup({ ui = { border = 'rounded' } }) end },
   { 'williamboman/mason-lspconfig.nvim', event = 'VeryLazy', dependencies = { 'williamboman/mason.nvim' }, config = function() require('mason-lspconfig').setup({ ensure_installed = { 'lua_ls', 'bashls', 'pyright', 'tsserver', 'gopls', 'rust_analyzer', 'jsonls', 'yamlls', 'marksman' }, automatic_installation = true }) end },
   { 'neovim/nvim-lspconfig', event = { 'BufReadPre', 'BufNewFile' }, config = function() require('sree.lsp').setup() end },
@@ -27,6 +27,9 @@ local plugins = {
   { 'windwp/nvim-autopairs', event = 'InsertEnter', config = function() require('nvim-autopairs').setup({}) end },
   { 'j-hui/fidget.nvim', tag = 'legacy', event = 'LspAttach', opts = { window = { blend = 0 }, text = { spinner = 'dots' } } },
   { 'nvimtools/none-ls.nvim', event = 'BufReadPost', dependencies = { 'nvim-lua/plenary.nvim' }, config = function() require('sree.format.null').setup() end },
+  -- Phase 3: Tasks & Testing
+  { 'stevearc/overseer.nvim', cmd = { 'OverseerRun', 'OverseerToggle', 'OverseerBuild', 'OverseerQuickAction' }, config = function() require('sree.tasks').setup() end },
+  { 'nvim-neotest/neotest', ft = { 'python', 'go', 'lua', 'typescript', 'javascript' }, dependencies = { 'nvim-lua/plenary.nvim', 'nvim-treesitter/nvim-treesitter', 'antoinemadec/FixCursorHold.nvim', 'nvim-neotest/neotest-python', 'nvim-neotest/neotest-go', 'haydenmeade/neotest-jest' }, config = function() require('sree.test').setup() end },
 }
 
 return plugins
