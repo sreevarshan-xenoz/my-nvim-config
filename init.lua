@@ -61,6 +61,12 @@ if ops and (not SreeFlags or SreeFlags.ops ~= false) then
   pcall(function() ops.setup() end)
 end
 
+-- Load embeddings module (Phase 6 skeleton) if flag enabled
+local embeds = prequire('sree.embeddings')
+if embeds and (SreeFlags and SreeFlags.embeddings) then
+  pcall(function() embeds.setup() end)
+end
+
 -- Basic notification if first run
 vim.defer_fn(function()
   if not vim.g.__sree_boot_msg then

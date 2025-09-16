@@ -44,4 +44,13 @@ map('v', '<leader>ar', function() require('sree.ai.rewrite').visual_rewrite() en
 map('n', '<leader>ss', function() vim.cmd('Sys stats') end, { desc = 'Sys: stats', silent = true })
 map('n', '<leader>so', function() vim.cmd('OpsToggle') end, { desc = 'Sys: dashboard toggle', silent = true })
 
+-- Embeddings (Phase 6) mappings under <leader>se*
+map('n', '<leader>sei', function() vim.cmd('EmbedIndex') end, { desc = 'Embeddings: index project', silent = true })
+map('n', '<leader>seq', function()
+  vim.ui.input({ prompt = 'Embedding query: ' }, function(input)
+    if input and #input > 0 then vim.cmd('EmbedQuery ' .. input) end
+  end)
+end, { desc = 'Embeddings: query', silent = true })
+map('n', '<leader>ses', function() vim.cmd('EmbedStatus') end, { desc = 'Embeddings: status', silent = true })
+
 return true

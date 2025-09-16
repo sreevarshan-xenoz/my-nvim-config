@@ -2,7 +2,7 @@
 -- Central feature flags (early load)
 local M = {
   ai = false,
-  embeddings = false,
+  embeddings = true, -- enable embeddings phase by default during development
   agent = false,
   voice = false,
   ops = false,
