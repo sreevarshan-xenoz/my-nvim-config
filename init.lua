@@ -55,6 +55,12 @@ prequire('sree.core.health')
 local lsp_notify = prequire('sree.core.lsp_notify')
 if lsp_notify and lsp_notify.setup then lsp_notify.setup() end
 
+-- Require ops module if flag enabled
+local ops = prequire('sree.ops')
+if ops and (not SreeFlags or SreeFlags.ops ~= false) then
+  pcall(function() ops.setup() end)
+end
+
 -- Basic notification if first run
 vim.defer_fn(function()
   if not vim.g.__sree_boot_msg then

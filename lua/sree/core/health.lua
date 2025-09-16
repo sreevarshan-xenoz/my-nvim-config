@@ -22,6 +22,10 @@ local function overseer_status()
   return 'ok'
 end
 
+local function ops_status()
+  return package.loaded['sree.ops'] and 'ok' or 'inactive'
+end
+
 local function collect()
   local loaded = vim.tbl_keys(package.loaded)
   table.sort(loaded)
@@ -53,8 +57,9 @@ end
 
 util.command('SreeHealth', function()
   local data = collect()
-  vim.notify(('[SreeHealth] startup=%.1fms plugins=%s lsp=%d test=%s tasks=%s colorscheme=%s'):format(
-    data.startup_ms or -1, data.plugin_count or '?', data.lsp_active or 0, data.test, data.tasks, data.colorscheme or 'none'
+  local ops = ops_status()
+  vim.notify(('[SreeHealth] startup=%.1fms plugins=%s lsp=%d test=%s tasks=%s ops=%s colorscheme=%s'):format(
+    data.startup_ms or -1, data.plugin_count or '?', data.lsp_active or 0, data.test, data.tasks, ops, data.colorscheme or 'none'
   ))
 end, {})
 

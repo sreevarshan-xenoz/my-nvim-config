@@ -39,8 +39,9 @@ map('n', '<leader>to', function() require('sree.test').open_output() end, { desc
 map('n', '<leader>ts', function() require('sree.test').toggle_summary() end, { desc = 'Test: summary', silent = true })
 
 -- Placeholder for future AI / Sys / Ops keymaps
--- map('n', '<leader>ai', function() require('sree.ai.chat').toggle() end, silent)
--- map('v', '<leader>ar', function() require('sree.ai.rewrite').visual_rewrite() end, silent)
--- map('n', '<leader>ss', ':Sys stats<CR>', silent)
+map('n', '<leader>ai', function() require('sree.ai.chat').toggle() end, silent)
+map('v', '<leader>ar', function() require('sree.ai.rewrite').visual_rewrite() end, silent)
+map('n', '<leader>ss', function() vim.cmd('Sys stats') end, { desc = 'Sys: stats', silent = true })
+map('n', '<leader>so', function() vim.cmd('OpsToggle') end, { desc = 'Sys: dashboard toggle', silent = true })
 
 return true
